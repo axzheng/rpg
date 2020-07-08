@@ -15,6 +15,8 @@ public class EnemyController : MonoBehaviour
 
     Animator animator;
 
+    bool isBroken;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,27 +25,42 @@ public class EnemyController : MonoBehaviour
 
         animator = GetComponent<Animator>();
 
+        isBroken = true;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer -= Time.deltaTime;
+        if (!isBroken) //if the robot is fixed, stop calculating movement timer
+        {
+            return;
+        }
+
+        timer -= Time.deltaTime; //calculate change direction time
         if(timer < 0f)
         {
             timer = changeDirecTime;
             direction = -direction;
         }
+
+        
     }
 
     void FixedUpdate()
     {
+        if (!isBroken) //if robot is fixed, stop moving
+        {
+            return;
+        }
+
+        //Robot movement
         Vector2 currentPos = rigidBody2D.position;
 
         if (vertical) {
             currentPos.y += speed * direction * Time.deltaTime;
 
-            animator.SetFloat("Move X", 0f);
+            animator.SetFloat("Move X", 0f); //tells animator bullshit
             animator.SetFloat("Move Y", direction);
         }
         else
@@ -51,11 +68,12 @@ public class EnemyController : MonoBehaviour
             currentPos.x += speed * direction * Time.deltaTime;
 
 
-            animator.SetFloat("Move X", direction);
+            animator.SetFloat("Move X", direction); //tells animator bullshit
             animator.SetFloat("Move Y", 0f);
         }
 
         rigidBody2D.MovePosition(currentPos);
+        //end Robot movement
     }
 
     void OnCollisionEnter2D(Collision2D other)
@@ -66,5 +84,12 @@ public class EnemyController : MonoBehaviour
         {
             controller.ChangeHealth(-1);
         }
+    }
+
+    public void Fix()
+    {
+        isBroken = false;
+        animator.SetTrigger("Fixed");
+        rigidBody2D.simulated = false; //removes rigidbody from physics system
     }
 }
