@@ -13,23 +13,16 @@ public class EnemyController : MonoBehaviour
     float timer;
     int direction = 1;
 
+    Animator animator;
+
     // Start is called before the first frame update
     void Start()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
         speed = 3.0f;
-        vertical = true;
 
-        if (vertical)
-        {
-            rigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionX |
-                RigidbodyConstraints2D.FreezeRotation;
-        }
-        else
-        {
-            rigidBody2D.constraints = RigidbodyConstraints2D.FreezePositionY |
-                RigidbodyConstraints2D.FreezeRotation;
-        }
+        animator = GetComponent<Animator>();
+
     }
 
     // Update is called once per frame
@@ -49,10 +42,17 @@ public class EnemyController : MonoBehaviour
 
         if (vertical) {
             currentPos.y += speed * direction * Time.deltaTime;
+
+            animator.SetFloat("Move X", 0f);
+            animator.SetFloat("Move Y", direction);
         }
         else
         {
             currentPos.x += speed * direction * Time.deltaTime;
+
+
+            animator.SetFloat("Move X", direction);
+            animator.SetFloat("Move Y", 0f);
         }
 
         rigidBody2D.MovePosition(currentPos);
