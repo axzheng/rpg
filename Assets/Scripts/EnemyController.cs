@@ -17,6 +17,8 @@ public class EnemyController : MonoBehaviour
 
     bool isBroken;
 
+    public ParticleSystem smokeEffect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -91,5 +93,6 @@ public class EnemyController : MonoBehaviour
         isBroken = false;
         animator.SetTrigger("Fixed");
         rigidBody2D.simulated = false; //removes rigidbody from physics system
+        smokeEffect.Stop(); //stops smoke effect
     }
 }
