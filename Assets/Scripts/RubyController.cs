@@ -25,11 +25,15 @@ public class RubyController : MonoBehaviour
 
     public ParticleSystem healthparticles;
 
+    AudioSource audioSource;
+    public AudioClip throwCogSound;
+
     // Start is called before the first frame update
     void Start()
     {
         rigidbody2d = GetComponent<Rigidbody2D>(); //get rigidbody component
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
 
         currentHealth = maxHealth;
 
@@ -127,5 +131,12 @@ public class RubyController : MonoBehaviour
 
         projectile.Launch(lookDirection, 300);
         animator.SetTrigger("Launch");
+
+        audioSource.PlayOneShot(throwCogSound);
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }
