@@ -27,6 +27,7 @@ public class RubyController : MonoBehaviour
 
     AudioSource audioSource;
     public AudioClip throwCogSound;
+    public AudioClip hitSound;
 
     // Start is called before the first frame update
     void Start()
@@ -110,6 +111,8 @@ public class RubyController : MonoBehaviour
             }
             isInvincible = true;
             invincibleTimer = timeInvincible;
+
+            PlaySound(hitSound);
         }
         else if (amount > 0)
         {

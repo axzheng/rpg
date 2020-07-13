@@ -19,6 +19,9 @@ public class EnemyController : MonoBehaviour
 
     public ParticleSystem smokeEffect;
 
+    AudioSource src;
+    [SerializeField] AudioClip fixedSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,8 @@ public class EnemyController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         isBroken = true;
+
+        src = GetComponent<AudioSource>();
 
     }
 
@@ -94,5 +99,8 @@ public class EnemyController : MonoBehaviour
         animator.SetTrigger("Fixed");
         rigidBody2D.simulated = false; //removes rigidbody from physics system
         smokeEffect.Stop(); //stops smoke effect
+        src.Stop();
+        src.PlayOneShot(fixedSound);
+
     }
 }
